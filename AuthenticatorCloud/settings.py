@@ -30,23 +30,34 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-)
+                  'django.contrib.admin',
+                  'django.contrib.auth',
+                  'django.contrib.contenttypes',
+                  'django.contrib.sessions',
+                  'django.contrib.messages',
+                  'django.contrib.staticfiles',
+
+                  #APP Dependency
+                  'tastypie',
+
+                  # APPS
+                  'PseudonymousBackup',
+                  )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+                      'django.contrib.sessions.middleware.SessionMiddleware',
+                      'django.middleware.common.CommonMiddleware',
+                      'django.middleware.csrf.CsrfViewMiddleware',
+                      'django.contrib.auth.middleware.AuthenticationMiddleware',
+                      'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+                      'django.contrib.messages.middleware.MessageMiddleware',
+                      'django.middleware.clickjacking.XFrameOptionsMiddleware',
+                      )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+                               'django.contrib.messages.context_processors.messages',
+                               'django.contrib.auth.context_processors.auth',
+                               )
 
 ROOT_URLCONF = 'AuthenticatorCloud.urls'
 
@@ -55,11 +66,14 @@ WSGI_APPLICATION = 'AuthenticatorCloud.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'authenticator_cloud',
+        'USER': 'alonmuroch',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -81,3 +95,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Parse database configuration from $DATABASE_URL
+#import dj_database_url
+#DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+                    os.path.join(BASE_DIR, 'static'),
+                    )
+
