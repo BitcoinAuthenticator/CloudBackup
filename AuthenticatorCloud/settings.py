@@ -42,6 +42,7 @@ INSTALLED_APPS = (
 
                   # APPS
                   'PseudonymousBackup',
+                  'Core'
                   )
 
 MIDDLEWARE_CLASSES = (
