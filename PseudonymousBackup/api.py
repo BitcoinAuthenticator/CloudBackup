@@ -2,7 +2,7 @@
 from tastypie.resources import ModelResource
 from PseudonymousBackup.models import WalletMetaDataBackup
 from tastypie.authentication import SessionAuthentication
-from Authorizations import WalletMetaDataBackupAuthorization
+from BackupAuthorizations import WalletMetaDataBackupAuthorization
 
 class WalletMetaDataBackupResource(ModelResource):
     class Meta:
