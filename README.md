@@ -1,8 +1,5 @@
 # CloudBackup
 ###Authenticator wallet cloud backup for the wallet's metadata
-
- This class is a communicator class with the backup cloud service for restoring the wallet's metadata.<br>
-
  <b>Problem:</b> bitcoin authenticator uses an bip44 like hierarchy of accounts to handle its keys.<br>
  An account can be a standard Pay-To_PubHash account where redeeming coins require only a single key<br>
  pair or a paired account which is a Pay-To-Hash account where redeeming coins require both the wallet’s<br>

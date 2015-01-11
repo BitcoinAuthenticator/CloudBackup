@@ -6,3 +6,6 @@ class WalletMetaDataBackup(models.Model):
     wallet = models.ForeignKey(Wallet, unique=True)
     meta_data = models.TextField()
     last_updated = models.DateTimeField('Last Updated')
+
+    def __unicode__(self):
+        return self.wallet.name
