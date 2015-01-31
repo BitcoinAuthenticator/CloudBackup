@@ -39,8 +39,9 @@ INSTALLED_APPS = (
                   'django.contrib.messages',
                   'django.contrib.staticfiles',
 
-                  #APP Dependency
+                  # Dependency
                   'tastypie',
+                  # 'registration',
 
                   # APPS
                   'PseudonymousBackup',
@@ -100,10 +101,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-# Parse database configuration from $DATABASE_URL
-#import dj_database_url
-#DATABASES['default'] =  dj_database_url.config()
-
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -120,3 +117,7 @@ STATICFILES_DIRS = (
                     os.path.join(BASE_DIR, 'static'),
                     )
 
+
+# django-registration-redux, see https://github.com/macropin/django-registration/blob/master/docs/quickstart.rst
+ACCOUNT_ACTIVATION_DAYS = 7         # One-week activation window.
+REGISTRATION_AUTO_LOGIN = True      # Automatically log the user in.
