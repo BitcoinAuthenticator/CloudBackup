@@ -1,29 +1,23 @@
+
 __author__ = 'alonmuroch'
 
 # PseudonymousBackup/api.py
 from django.conf.urls import url
 from tastypie.resources import ModelResource
-from tastypie.authentication import SessionAuthentication, BasicAuthentication
+from Core.CoreAuthentication import DjangoCookieBasicAuthentication
 from django.contrib.auth import authenticate, login, logout
 from tastypie.http import HttpUnauthorized, HttpForbidden
-from Core.CoreAuthorizations import UserAuthorization, WalletAuthorization
-
+from Core.CoreAuthorizations import WalletAuthorization, UsersAuthorization
 from Core.models import Wallet
 from django.contrib.auth.models import User
-
-class WalletsResource(ModelResource):
-    class Meta:
-        queryset = Wallet.objects.all()
-        resource_name = 'Wallets'
-        authentication = SessionAuthentication()
-        authorization = WalletAuthorization()
+from tastypie import fields
 
 class UsersResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         resource_name = 'Users'
-        authentication = SessionAuthentication()
-        authorization = UserAuthorization()
+        authentication = DjangoCookieBasicAuthentication()
+        authorization  = UsersAuthorization()
 
     def override_urls(self):
         return [
@@ -71,3 +65,12 @@ class UsersResource(ModelResource):
             return self.create_response(request, { 'success': True })
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
+
+
+class WalletsResource(ModelResource):
+    user = fields.ForeignKey(UsersResource, 'user')
+    class Meta:
+        queryset = Wallet.objects.all()
+        resource_name = 'Wallets'
+        authentication = DjangoCookieBasicAuthentication()
+        authorization = WalletAuthorization()
