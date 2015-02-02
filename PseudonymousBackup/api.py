@@ -1,5 +1,5 @@
 # PseudonymousBackup/api.py
-from Core.CoreAuthentication import DjangoCookieBasicAuthentication
+from Core.CoreAuthentication import CookieBasicAuthentication
 from Core.CoreAuthorizations import BasicAuthorization
 from Core.api import WalletsResource
 from tastypie.resources import ModelResource
@@ -11,5 +11,5 @@ class WalletMetaDataBackupResource(ModelResource):
     class Meta:
         queryset = WalletMetaDataBackup.objects.all()
         resource_name = 'WalletMetaDataBackup'
-        authentication = DjangoCookieBasicAuthentication()
+        authentication = CookieBasicAuthentication()
         authorization = BasicAuthorization()

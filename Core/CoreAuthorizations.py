@@ -44,6 +44,8 @@ class UsersAuthorization(BasicAuthorization):
             raise Unauthorized("You are not allowed to access that resource.")
         else:
             return True
+    def create_detail(self, object_list, bundle):
+        return True
 
 class WalletAuthorization(BasicAuthorization):
     def read_list(self, object_list, bundle):

@@ -1,10 +1,12 @@
+from django.db import IntegrityError
+from tastypie.exceptions import BadRequest
 
 __author__ = 'alonmuroch'
 
 # PseudonymousBackup/api.py
 from django.conf.urls import url
 from tastypie.resources import ModelResource
-from Core.CoreAuthentication import DjangoCookieBasicAuthentication
+from Core.CoreAuthentication import CookieBasicAuthentication, UsersCookieBasicAuthentication
 from django.contrib.auth import authenticate, login, logout
 from tastypie.http import HttpUnauthorized, HttpForbidden
 from Core.CoreAuthorizations import WalletAuthorization, UsersAuthorization
@@ -16,8 +18,18 @@ class UsersResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         resource_name = 'Users'
-        authentication = DjangoCookieBasicAuthentication()
+        authentication = UsersCookieBasicAuthentication()
         authorization  = UsersAuthorization()
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        try:
+            bundle = super(UsersResource, self).obj_create(bundle)
+            bundle.obj.set_password(bundle.data.get('password'))
+            bundle.obj.save()
+        except IntegrityError:
+            raise BadRequest('Username already exists')
+
+        return bundle
 
     def override_urls(self):
         return [
@@ -49,12 +61,12 @@ class UsersResource(ModelResource):
             else:
                 return self.create_response(request, {
                     'success': False,
-                    'reason': 'disabled',
+                    'reason': 'user is no longer active',
                     }, HttpForbidden )
         else:
             return self.create_response(request, {
                 'success': False,
-                'reason': 'incorrect',
+                'reason': 'Could not login, make sure your credentials are right',
                 }, HttpUnauthorized )
 
     def logout(self, request, **kwargs):
@@ -72,5 +84,5 @@ class WalletsResource(ModelResource):
     class Meta:
         queryset = Wallet.objects.all()
         resource_name = 'Wallets'
-        authentication = DjangoCookieBasicAuthentication()
+        authentication = CookieBasicAuthentication()
         authorization = WalletAuthorization()
